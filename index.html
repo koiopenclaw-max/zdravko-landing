@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zdravko — Здравословни рецепти за цялото семейство</title>
+    <meta name="description" content="Zdravko е мобилно приложение за здравословни семейни рецепти. Запази рецепти от Instagram, TikTok и YouTube с едно натискане.">
+    <meta name="keywords" content="здравословни рецепти, семейни рецепти, готвене, списък за пазаруване, Zdravko">
+
+    <!-- OG Tags BG -->
+    <meta property="og:title" content="Zdravko — Здравословни рецепти за цялото семейство">
+    <meta property="og:description" content="Запази рецепти от социалните мрежи. Готви лесно. Пазарувай умно.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://zdravko.co">
+    <meta property="og:locale" content="bg_BG">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Zdravko — Healthy Family Meals Made Easy">
+    <meta name="twitter:description" content="Save recipes from social media. Cook with clear instructions. Shop smart.">
+
+    <link rel="canonical" href="https://zdravko.co">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Work+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS VARIABLES & RESET
+           ============================================ */
+        :root {
+            --primary: #2D7A4F;
+            --accent: #4CAF50;
+            --light-bg: #E8F5E9;
+            --dark-green: #1B5E20;
+            --cta: #FF6B35;
+            --cta-hover: #E55A2B;
+            --white: #FFFFFF;
+            --off-white: #FAFDF7;
+            --text-dark: #1A2E1A;
+            --text-medium: #3D5A3D;
+            --text-light: #6B8A6B;
+            --shadow-sm: 0 2px 8px rgba(45, 122, 79, 0.08);
+            --shadow-md: 0 8px 30px rgba(45, 122, 79, 0.12);
+            --shadow-lg: 0 20px 60px rgba(45, 122, 79, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --font-heading: 'Work Sans', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            background: var(--off-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           GRAIN TEXTURE OVERLAY
+           ============================================ */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--grain);
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        /* ============================================
+           BILINGUAL SYSTEM
+           ============================================ */
+        [lang="bg"] .en { display: none !important; }
+        [lang="en"] .bg { display: none !important; }
+
+        /* ============================================
+           SCROLL ANIMATIONS
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--text-dark);
+        }
+
+        h1 { font-size: clamp(2.2rem, 5.5vw, 3.8rem); font-weight: 800; }
+        h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+        h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 600; }
+
+        p { color: var(--text-medium); font-size: 1.05rem; }
+
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            position: relative;
+            padding: 100px 0;
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 64px 0; }
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1.05rem;
+            padding: 16px 36px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-cta {
+            background: var(--cta);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.35);
+        }
+
+        .btn-cta:hover {
+            background: var(--cta-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.45);
+        }
+
+        .btn-cta:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(250, 253, 247, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(45, 122, 79, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            padding: 10px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.7rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .logo .leaf {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 0 50% 0 50%;
+            transform: rotate(-45deg) translate(2px, -8px);
+            position: relative;
+        }
+
+        .logo .leaf::after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 10px;
+            background: rgba(255,255,255,0.6);
+            top: 3px;
+            left: 5px;
+            transform: rotate(20deg);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .lang-toggle {
+            display: flex;
+            background: var(--light-bg);
+            border-radius: 50px;
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .lang-toggle button {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            border: none;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .lang-toggle button.active {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .header-cta {
+            padding: 10px 24px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .header-cta span { display: none; }
+            .header-cta { padding: 10px 16px; }
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            padding-top: 140px;
+            padding-bottom: 80px;
+            background: linear-gradient(165deg, var(--off-white) 0%, var(--light-bg) 50%, rgba(232, 245, 233, 0.3) 100%);
+            position: relative;
+            overflow: hidden;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -120px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -150px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(45, 122, 79, 0.08);
+            border: 1px solid rgba(45, 122, 79, 0.15);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .hero h1 {
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary);
+            position: relative;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: rgba(76, 175, 80, 0.2);
+            border-radius: 4px;
+            z-index: -1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-medium);
+            margin-bottom: 36px;
+            max-width: 480px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-social-proof {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .avatar-stack {
+            display: flex;
+        }
+
+        .avatar-stack .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--white);
+            margin-left: -10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .avatar-stack .avatar:first-child { margin-left: 0; }
+        .avatar-stack .avatar:nth-child(1) { background: #E8917A; }
+        .avatar-stack .avatar:nth-child(2) { background: #7AB5E8; }
+        .avatar-stack .avatar:nth-child(3) { background: #A8D87A; }
+        .avatar-stack .avatar:nth-child(4) { background: #E8C77A; }
+
+        .social-proof-text {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .social-proof-text strong {
+            color: var(--primary);
+        }
+
+        /* ============================================
+           PHONE MOCKUP
+           ============================================ */
+        .phone-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-mockup {
+            width: 280px;
+            height: 560px;
+            background: var(--text-dark);
+            border-radius: 40px;
+            padding: 12px;
+            position: relative;
+            box-shadow: var(--shadow-lg),
+                        inset 0 0 0 2px rgba(255,255,255,0.1);
+            transform: perspective(800px) rotateY(-8deg) rotateX(2deg);
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .phone-mockup:hover {
+            transform: perspective(800px) rotateY(-3deg) rotateX(1deg);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-notch {
+            width: 120px;
+            height: 28px;
+            background: var(--text-dark);
+            border-radius: 0 0 18px 18px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .phone-status-bar {
+            height: 44px;
+            padding: 14px 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .phone-app-header {
+            padding: 8px 16px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .phone-app-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .phone-search {
+            margin: 0 12px 12px;
+            background: #F5F7F5;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 0.7rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .phone-search-icon {
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--text-light);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .phone-search-icon::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 2px;
+            background: var(--text-light);
+            bottom: -3px;
+            right: -4px;
+            transform: rotate(45deg);
+        }
+
+        .phone-categories {
+            display: flex;
+            gap: 6px;
+            padding: 0 12px 12px;
+            overflow: hidden;
+        }
+
+        .phone-cat {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .phone-cat:nth-child(1) { background: var(--primary); color: white; }
+        .phone-cat:nth-child(2) { background: #F0F4F0; color: var(--text-medium); }
+        .phone-cat:nth-child(3) { background: #F0F4F0; color: var(--text-medium); }
+
+        .phone-recipes {
+            padding: 0 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .phone-recipe-card {
+            background: var(--white);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .recipe-card-img {
+            height: 80px;
+            position: relative;
+        }
+
+        .recipe-card-img:nth-child(1) {
+            background: linear-gradient(135deg, #A8E6A3 0%, #66BB6A 100%);
+        }
+
+        .phone-recipe-card:nth-child(1) .recipe-card-img {
+            background: linear-gradient(135deg, #FFE0B2 0%, #FF9800 100%);
+        }
+
+        .phone-recipe-card:nth-child(2) .recipe-card-img {
+            background: linear-gradient(135deg, #C8E6C9 0%, #66BB6A 100%);
+        }
+
+        .phone-recipe-card:nth-child(3) .recipe-card-img {
+            background: linear-gradient(135deg, #FFCCBC 0%, #FF7043 100%);
+        }
+
+        .recipe-card-img .food-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .recipe-card-img .save-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .save-badge::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-left: 2px solid var(--cta);
+            border-bottom: 2px solid var(--cta);
+            transform: rotate(-45deg) translate(2px, -2px) scale(0.6);
+        }
+
+        .recipe-card-info {
+            padding: 10px 12px;
+        }
+
+        .recipe-card-info .recipe-title {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.72rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .recipe-card-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.58rem;
+            color: var(--text-light);
+        }
+
+        .phone-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: var(--white);
+            border-top: 1px solid #EEE;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 8px;
+        }
+
+        .phone-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .phone-nav-item.active { color: var(--primary); }
+
+        .phone-nav-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Floating elements around phone */
+        .phone-float {
+            position: absolute;
+            border-radius: var(--radius-md);
+            background: var(--white);
+            box-shadow: var(--shadow-md);
+            padding: 12px 16px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 3;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .phone-float-1 {
+            top: 60px;
+            right: -20px;
+            color: var(--primary);
+        }
+
+        .phone-float-2 {
+            bottom: 120px;
+            left: -30px;
+            color: var(--cta);
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 900px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-subtitle { margin-left: auto; margin-right: auto; }
+            .hero-actions { justify-content: center; }
+            .hero-social-proof { justify-content: center; }
+
+            .phone-mockup {
+                transform: perspective(800px) rotateY(0deg) rotateX(0deg);
+                width: 240px;
+                height: 480px;
+            }
+
+            .phone-mockup:hover {
+                transform: perspective(800px) rotateY(0deg) rotateX(0deg);
+            }
+
+            .phone-float { display: none; }
+        }
+
+        /* ============================================
+           HOW IT WORKS
+           ============================================ */
+        .how-it-works {
+            background: var(--white);
+            position: relative;
+        }
+
+        .how-it-works::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(45, 122, 79, 0.15), transparent);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            max-width: 560px;
+            margin: 16px auto 0;
+            font-size: 1.1rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            position: relative;
+        }
+
+        .steps-grid::before {
+            content: '';
+            position: absolute;
+            top: 48px;
+            left: 14%;
+            right: 14%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--light-bg), var(--accent), var(--light-bg));
+            z-index: 0;
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 16px rgba(45, 122, 79, 0.25);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .step-card p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .steps-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px 24px;
+            }
+            .steps-grid::before { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================
+           FEATURES SECTION
+           ============================================ */
+        .features {
+            background: linear-gradient(180deg, var(--off-white) 0%, var(--light-bg) 100%);
+            position: relative;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 36px 28px;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid rgba(45, 122, 79, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+
+        .feature-icon-1 { background: rgba(255, 107, 53, 0.1); }
+        .feature-icon-2 { background: rgba(76, 175, 80, 0.1); }
+        .feature-icon-3 { background: rgba(45, 122, 79, 0.1); }
+        .feature-icon-4 { background: rgba(255, 152, 0, 0.1); }
+        .feature-icon-5 { background: rgba(156, 39, 176, 0.1); }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .features-grid .feature-card:nth-child(4) {
+            grid-column: 1 / 2;
+        }
+
+        .features-grid .feature-card:nth-child(5) {
+            grid-column: 2 / 3;
+        }
+
+        @media (max-width: 900px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .features-grid .feature-card:nth-child(4),
+            .features-grid .feature-card:nth-child(5) {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================
+           WHO IS IT FOR
+           ============================================ */
+        .who-section {
+            background: var(--white);
+            position: relative;
+        }
+
+        .who-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(45, 122, 79, 0.15), transparent);
+        }
+
+        .who-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .who-text h2 {
+            margin-bottom: 16px;
+        }
+
+        .who-text > p {
+            font-size: 1.1rem;
+            margin-bottom: 36px;
+        }
+
+        .use-cases {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .use-case {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            padding: 20px;
+            background: var(--light-bg);
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+        }
+
+        .use-case:hover {
+            background: rgba(232, 245, 233, 0.8);
+            transform: translateX(4px);
+        }
+
+        .use-case-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.3rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .use-case-text h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .use-case-text p {
+            font-size: 0.9rem;
+        }
+
+        .who-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .who-illustration {
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--light-bg) 0%, rgba(76, 175, 80, 0.08) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .who-illustration-inner {
+            font-size: 6rem;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+        }
+
+        .who-float {
+            position: absolute;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 10px 16px;
+            box-shadow: var(--shadow-md);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .who-float-1 {
+            top: 20%;
+            right: -10px;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .who-float-2 {
+            bottom: 25%;
+            left: -10px;
+            animation: float 5s ease-in-out 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .who-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .who-visual { order: -1; }
+            .who-illustration { max-width: 280px; margin: 0 auto; }
+            .who-float { display: none; }
+            .use-case { text-align: left; }
+        }
+
+        /* ============================================
+           WAITLIST SECTION
+           ============================================ */
+        .waitlist {
+            background: linear-gradient(165deg, var(--primary) 0%, var(--dark-green) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .waitlist::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .waitlist::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .waitlist .section-header {
+            position: relative;
+            z-index: 2;
+        }
+
+        .waitlist h2 {
+            color: var(--white);
+        }
+
+        .waitlist .section-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .waitlist .section-header p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .waitlist-form-wrapper {
+            max-width: 520px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .waitlist-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .waitlist-form .btn-cta {
+            width: 100%;
+            justify-content: center;
+            padding: 18px;
+            font-size: 1.1rem;
+            margin-top: 8px;
+        }
+
+        .waitlist-counter {
+            text-align: center;
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        .counter-number {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--white);
+            font-size: 1.1rem;
+        }
+
+        .waitlist-success {
+            display: none;
+            text-align: center;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .waitlist-success.show {
+            display: block;
+        }
+
+        .waitlist-success .checkmark {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 2rem;
+        }
+
+        .waitlist-success h3 {
+            color: var(--white);
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .waitlist-success p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background: var(--text-dark);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 60px 0 32px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand .logo {
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .footer-brand .logo .leaf {
+            background: var(--accent);
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+            max-width: 320px;
+        }
+
+        .footer-links h4 {
+            color: var(--white);
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .footer-social svg {
+            width: 18px;
+            height: 18px;
+            fill: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-social a:hover svg {
+            fill: var(--white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+
+        /* ============================================
+           CUSTOM SVG ICONS (inline)
+           ============================================ */
+        .icon-svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--off-white);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Grain texture overlay -->
+    <div class="grain-overlay" aria-hidden="true"></div>
+
+    <!-- ============================================
+         HEADER
+         ============================================ -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="#" class="logo" aria-label="Zdravko">
+                Zdravko<span class="leaf"></span>
+            </a>
+            <div class="header-actions">
+                <div class="lang-toggle" role="group" aria-label="Language">
+                    <button id="lang-bg" class="active" aria-label="Български">BG</button>
+                    <button id="lang-en" aria-label="English">EN</button>
+                </div>
+                <a href="#waitlist" class="btn btn-cta header-cta">
+                    <span class="bg">Запиши се</span>
+                    <span class="en">Join Waitlist</span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+         HERO
+         ============================================ -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge reveal">
+                    <span class="dot"></span>
+                    <span class="bg">Скоро в App Store и Google Play</span>
+                    <span class="en">Coming soon to App Store & Google Play</span>
+                </div>
+
+                <h1 class="reveal reveal-delay-1">
+                    <span class="bg">Здравословно хранене за <span class="highlight">цялото семейство</span> — без стрес</span>
+                    <span class="en">Healthy meals for <span class="highlight">the whole family</span> — stress-free</span>
+                </h1>
+
+                <p class="hero-subtitle reveal reveal-delay-2">
+                    <span class="bg">Запазвай рецепти от социалните мрежи, организирай ги и пазарувай умно — всичко в едно приложение, създадено за заети мами.</span>
+                    <span class="en">Save recipes from social media, organize them, and shop smart — all in one app made for busy moms.</span>
+                </p>
+
+                <div class="hero-actions reveal reveal-delay-3">
+                    <a href="#waitlist" class="btn btn-cta">
+                        <span class="bg">Искам ранен достъп</span>
+                        <span class="en">Get Early Access</span>
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <a href="#how-it-works" class="btn btn-outline">
+                        <span class="bg">Как работи?</span>
+                        <span class="en">How It Works</span>
+                    </a>
+                </div>
+
+                <div class="hero-social-proof reveal reveal-delay-4">
+                    <div class="avatar-stack">
+                        <div class="avatar">М</div>
+                        <div class="avatar">А</div>
+                        <div class="avatar">Д</div>
+                        <div class="avatar">К</div>
+                    </div>
+                    <p class="social-proof-text">
+                        <span class="bg"><strong>1,247 семейства</strong> вече се записаха</span>
+                        <span class="en"><strong>1,247 families</strong> already signed up</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="phone-wrapper reveal reveal-delay-2">
+                <div class="phone-float phone-float-1">
+                    <span class="bg">🛒 Списък готов!</span>
+                    <span class="en">🛒 List ready!</span>
+                </div>
+                <div class="phone-float phone-float-2">
+                    <span class="bg">📱 Запазено от IG</span>
+                    <span class="en">📱 Saved from IG</span>
+                </div>
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="phone-notch"></div>
+                        <div class="phone-status-bar">
+                            <span>9:41</span>
+                            <span>●●● ▐▐ ▮</span>
+                        </div>
+                        <div class="phone-app-header">
+                            <span class="phone-app-title">Zdravko</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="4" r="2" fill="#2D7A4F"/><circle cx="10" cy="10" r="2" fill="#2D7A4F"/><circle cx="10" cy="16" r="2" fill="#2D7A4F"/></svg>
+                        </div>
+                        <div class="phone-search">
+                            <div class="phone-search-icon"></div>
+                            <span class="bg">Търси рецепти...</span>
+                            <span class="en">Search recipes...</span>
+                        </div>
+                        <div class="phone-categories">
+                            <span class="phone-cat">
+                                <span class="bg">Всички</span>
+                                <span class="en">All</span>
+                            </span>
+                            <span class="phone-cat">
+                                <span class="bg">Обяд</span>
+                                <span class="en">Lunch</span>
+                            </span>
+                            <span class="phone-cat">
+                                <span class="bg">Десерти</span>
+                                <span class="en">Desserts</span>
+                            </span>
+                        </div>
+                        <div class="phone-recipes">
+                            <div class="phone-recipe-card">
+                                <div class="recipe-card-img">
+                                    <span class="food-icon">🥗</span>
+                                    <div class="save-badge"></div>
+                                </div>
+                                <div class="recipe-card-info">
+                                    <div class="recipe-title">
+                                        <span class="bg">Пилешка салата с киноа</span>
+                                        <span class="en">Chicken Quinoa Salad</span>
+                                    </div>
+                                    <div class="recipe-card-meta">
+                                        <span>⏱ 25 мин</span>
+                                        <span>👨‍👩‍👧 4 порции</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="phone-recipe-card">
+                                <div class="recipe-card-img">
+                                    <span class="food-icon">🍝</span>
+                                    <div class="save-badge"></div>
+                                </div>
+                                <div class="recipe-card-info">
+                                    <div class="recipe-title">
+                                        <span class="bg">Паста с песто и зеленчуци</span>
+                                        <span class="en">Pesto Veggie Pasta</span>
+                                    </div>
+                                    <div class="recipe-card-meta">
+                                        <span>⏱ 20 мин</span>
+                                        <span>👨‍👩‍👧 3 порции</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav">
+                            <div class="phone-nav-item active">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10l7-7 7 7M5 9v7a1 1 0 001 1h3v-4h2v4h3a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <span class="bg" style="font-size:0.5rem">Начало</span>
+                                <span class="en" style="font-size:0.5rem">Home</span>
+                            </div>
+                            <div class="phone-nav-item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <span class="bg" style="font-size:0.5rem">Търси</span>
+                                <span class="en" style="font-size:0.5rem">Search</span>
+                            </div>
+                            <div class="phone-nav-item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 8h14M8 8v9" stroke="currentColor" stroke-width="1.5"/></svg>
+                                <span class="bg" style="font-size:0.5rem">Списък</span>
+                                <span class="en" style="font-size:0.5rem">List</span>
+                            </div>
+                            <div class="phone-nav-item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <span class="bg" style="font-size:0.5rem">Профил</span>
+                                <span class="en" style="font-size:0.5rem">Profile</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         HOW IT WORKS
+         ============================================ -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header reveal">
+                <p class="section-label">
+                    <span class="bg">Как работи</span>
+                    <span class="en">How It Works</span>
+                </p>
+                <h2>
+                    <span class="bg">Четири лесни стъпки до здравословна вечеря</span>
+                    <span class="en">Four easy steps to a healthy dinner</span>
+                </h2>
+                <p>
+                    <span class="bg">От вдъхновение в социалните мрежи до ястие на масата — бързо и лесно.</span>
+                    <span class="en">From social media inspiration to a dish on the table — quick and easy.</span>
+                </p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card reveal">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <svg class="icon-svg" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="8" width="32" height="32" rx="8" fill="#E8F5E9"/>
+                            <path d="M18 20l4-4 8 8" stroke="#2D7A4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="30" cy="18" r="3" fill="#FF6B35"/>
+                            <path d="M14 32l6-8 4 4 4-5 6 9H14z" fill="#4CAF50" opacity="0.6"/>
+                            <path d="M24 35v4M20 37l4 4 4-4" stroke="#2D7A4F" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        <span class="bg">Открий рецепта</span>
+                        <span class="en">Find a Recipe</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Намери вдъхновение в Instagram, TikTok или YouTube.</span>
+                        <span class="en">Get inspired on Instagram, TikTok, or YouTube.</span>
+                    </p>
+                </div>
+
+                <div class="step-card reveal reveal-delay-1">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <svg class="icon-svg" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="8" width="32" height="32" rx="8" fill="#E8F5E9"/>
+                            <rect x="16" y="14" width="16" height="20" rx="3" stroke="#2D7A4F" stroke-width="2"/>
+                            <path d="M20 22h8M20 26h5" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="34" cy="14" r="6" fill="#FF6B35"/>
+                            <path d="M32 14l2 2 3-3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        <span class="bg">Запази с едно натискане</span>
+                        <span class="en">Save with One Tap</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Сподели линка с Zdravko и рецептата се запазва автоматично.</span>
+                        <span class="en">Share the link with Zdravko and the recipe saves automatically.</span>
+                    </p>
+                </div>
+
+                <div class="step-card reveal reveal-delay-2">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <svg class="icon-svg" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="8" width="32" height="32" rx="8" fill="#E8F5E9"/>
+                            <rect x="14" y="16" width="20" height="16" rx="2" stroke="#2D7A4F" stroke-width="2"/>
+                            <path d="M14 22h20" stroke="#2D7A4F" stroke-width="1.5"/>
+                            <circle cx="20" cy="28" r="2" fill="#4CAF50"/>
+                            <path d="M26 26l4 4M30 26l-4 4" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        <span class="bg">Готви стъпка по стъпка</span>
+                        <span class="en">Cook Step by Step</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Ясни инструкции, без да се губиш в дълги видеа.</span>
+                        <span class="en">Clear instructions — no more scrolling through long videos.</span>
+                    </p>
+                </div>
+
+                <div class="step-card reveal reveal-delay-3">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <svg class="icon-svg" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="8" width="32" height="32" rx="8" fill="#E8F5E9"/>
+                            <path d="M16 16h4l2 16h8l3-10H20" stroke="#2D7A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="22" cy="36" r="2" fill="#4CAF50"/>
+                            <circle cx="30" cy="36" r="2" fill="#4CAF50"/>
+                            <path d="M32 18l2 2 3-4" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        <span class="bg">Генерирай списък за пазаруване</span>
+                        <span class="en">Generate Shopping List</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Автоматичен списък с всички продукти, от които имаш нужда.</span>
+                        <span class="en">Automatic list with everything you need from the store.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         KEY FEATURES
+         ============================================ -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header reveal">
+                <p class="section-label">
+                    <span class="bg">Функции</span>
+                    <span class="en">Features</span>
+                </p>
+                <h2>
+                    <span class="bg">Всичко, от което имаш нужда в кухнята</span>
+                    <span class="en">Everything you need in the kitchen</span>
+                </h2>
+                <p>
+                    <span class="bg">Zdravko е създадено, за да направи готвенето лесно и приятно за цялото семейство.</span>
+                    <span class="en">Zdravko is built to make cooking easy and enjoyable for the whole family.</span>
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon feature-icon-1">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <rect x="4" y="4" width="20" height="20" rx="5" stroke="#FF6B35" stroke-width="2"/>
+                            <path d="M9 14l3-6 3 4 4-5" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="20" cy="8" r="3" fill="#FF6B35" opacity="0.2"/>
+                            <path d="M18 7l2 2 3-3" stroke="#FF6B35" stroke-width="1.2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        <span class="bg">Импорт от социалните мрежи</span>
+                        <span class="en">Import from Social Media</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Запази рецепти от Instagram, TikTok и YouTube с едно споделяне. Zdravko извлича съставките и стъпките автоматично.</span>
+                        <span class="en">Save recipes from Instagram, TikTok, and YouTube with one share. Zdravko extracts ingredients and steps automatically.</span>
+                    </p>
+                </div>
+
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon feature-icon-2">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <rect x="6" y="3" width="16" height="22" rx="3" stroke="#4CAF50" stroke-width="2"/>
+                            <circle cx="14" cy="12" r="4" stroke="#4CAF50" stroke-width="1.5"/>
+                            <path d="M14 10v4l2 1" stroke="#4CAF50" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M10 20h8" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        <span class="bg">Сканирай рецепта от снимка</span>
+                        <span class="en">Scan Recipe from Photo</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Снимай бабината тетрадка с рецепти и Zdravko ще ги дигитализира за теб. Нищо няма да се загуби.</span>
+                        <span class="en">Photograph grandma's recipe notebook and Zdravko will digitize it for you. Nothing gets lost.</span>
+                    </p>
+                </div>
+
+                <div class="feature-card reveal reveal-delay-2">
+                    <div class="feature-icon feature-icon-3">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <path d="M4 7a2 2 0 012-2h16a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" stroke="#2D7A4F" stroke-width="2"/>
+                            <path d="M4 11h20" stroke="#2D7A4F" stroke-width="1.5"/>
+                            <path d="M9 15h4M9 19h8" stroke="#2D7A4F" stroke-width="1.5" stroke-linecap="round"/>
+                            <rect x="18" y="14" width="4" height="6" rx="1" fill="#2D7A4F" opacity="0.15"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        <span class="bg">Организирана книга с рецепти</span>
+                        <span class="en">Organized Recipe Book</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Категории, тагове и търсене — намери всяка рецепта за секунди. Твоята лична готварска книга, винаги под ръка.</span>
+                        <span class="en">Categories, tags, and search — find any recipe in seconds. Your personal cookbook, always at hand.</span>
+                    </p>
+                </div>
+
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon feature-icon-4">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <path d="M8 6h3l2 16h8l3-11H11" stroke="#FF9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="13" cy="25" r="1.5" fill="#FF9800"/>
+                            <circle cx="21" cy="25" r="1.5" fill="#FF9800"/>
+                            <path d="M17 9l1.5 1.5L22 7" stroke="#FF9800" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        <span class="bg">Умен списък за пазаруване</span>
+                        <span class="en">Smart Shopping List</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Автоматично генериран списък за пазаруване от избраните рецепти. Обединява повтарящи се продукти и пести време.</span>
+                        <span class="en">Auto-generated shopping list from your chosen recipes. Combines duplicates and saves you time.</span>
+                    </p>
+                </div>
+
+                <div class="feature-card reveal reveal-delay-2">
+                    <div class="feature-icon feature-icon-5">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <circle cx="10" cy="10" r="4" stroke="#9C27B0" stroke-width="2"/>
+                            <circle cx="18" cy="10" r="4" stroke="#9C27B0" stroke-width="2"/>
+                            <path d="M6 22c0-3 2.5-5.5 5.5-5.5h5c3 0 5.5 2.5 5.5 5.5" stroke="#9C27B0" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="14" cy="20" r="2" fill="#9C27B0" opacity="0.2"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        <span class="bg">Споделяне в семейството</span>
+                        <span class="en">Family Sharing</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Споделяй рецепти и списъци с половинката или с баба. Готвенето е по-забавно, когато е заедно.</span>
+                        <span class="en">Share recipes and lists with your partner or grandma. Cooking is more fun when done together.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         WHO IS IT FOR
+         ============================================ -->
+    <section class="who-section" id="who">
+        <div class="container">
+            <div class="section-header reveal">
+                <p class="section-label">
+                    <span class="bg">За кого е</span>
+                    <span class="en">Who Is It For</span>
+                </p>
+                <h2>
+                    <span class="bg">За заети мами, които искат здравословно хранене за семейството</span>
+                    <span class="en">For busy moms who want healthy meals for the family</span>
+                </h2>
+            </div>
+
+            <div class="who-content">
+                <div class="who-text">
+                    <p class="reveal">
+                        <span class="bg">Знаем колко е натоварено ежедневието ти. Затова създадохме Zdravko — за да имаш повече време за нещата, които наистина имат значение.</span>
+                        <span class="en">We know how hectic your daily life is. That's why we built Zdravko — so you have more time for the things that truly matter.</span>
+                    </p>
+                    <div class="use-cases">
+                        <div class="use-case reveal">
+                            <div class="use-case-icon">🌅</div>
+                            <div class="use-case-text">
+                                <h4>
+                                    <span class="bg">Сутрешното планиране</span>
+                                    <span class="en">Morning Planning</span>
+                                </h4>
+                                <p>
+                                    <span class="bg">Избери рецепти за седмицата и генерирай списъка за пазаруване, докато пиеш кафето си.</span>
+                                    <span class="en">Choose recipes for the week and generate your shopping list while sipping your coffee.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="use-case reveal reveal-delay-1">
+                            <div class="use-case-icon">📱</div>
+                            <div class="use-case-text">
+                                <h4>
+                                    <span class="bg">Вдъхновение от рийлс</span>
+                                    <span class="en">Reel Inspiration</span>
+                                </h4>
+                                <p>
+                                    <span class="bg">Видя страхотна рецепта в Instagram? Запази я с едно натискане, вместо да я загубиш в потока.</span>
+                                    <span class="en">Spotted a great recipe on Instagram? Save it with one tap instead of losing it in the feed.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="use-case reveal reveal-delay-2">
+                            <div class="use-case-icon">👵</div>
+                            <div class="use-case-text">
+                                <h4>
+                                    <span class="bg">Бабините рецепти</span>
+                                    <span class="en">Grandma's Recipes</span>
+                                </h4>
+                                <p>
+                                    <span class="bg">Дигитализирай ръкописните рецепти от тетрадката на баба и ги пази завинаги в приложението.</span>
+                                    <span class="en">Digitize handwritten recipes from grandma's notebook and keep them forever in the app.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="who-visual reveal">
+                    <div class="who-illustration">
+                        <div class="who-illustration-inner">👩‍🍳</div>
+                        <div class="who-float who-float-1">
+                            <span class="bg">❤️ "Мамо, супер е!"</span>
+                            <span class="en">❤️ "Mom, this is great!"</span>
+                        </div>
+                        <div class="who-float who-float-2">
+                            <span class="bg">✅ 15 мин до вечеря</span>
+                            <span class="en">✅ 15 min to dinner</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         WAITLIST
+         ============================================ -->
+    <section class="waitlist" id="waitlist">
+        <div class="container">
+            <div class="section-header reveal">
+                <p class="section-label">
+                    <span class="bg">Ранен достъп</span>
+                    <span class="en">Early Access</span>
+                </p>
+                <h2>
+                    <span class="bg">Бъди сред първите, които ще опитат Zdravko</span>
+                    <span class="en">Be among the first to try Zdravko</span>
+                </h2>
+                <p>
+                    <span class="bg">Запиши се и ще те уведомим, когато приложението е готово. Безплатно за ранните потребители.</span>
+                    <span class="en">Sign up and we'll notify you when the app is ready. Free for early users.</span>
+                </p>
+            </div>
+
+            <div class="waitlist-form-wrapper reveal">
+                <form class="waitlist-form" id="waitlistForm" novalidate>
+                    <div class="form-group">
+                        <input type="text" id="waitlistName" required
+                               data-placeholder-bg="Твоето име"
+                               data-placeholder-en="Your name">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="waitlistEmail" required
+                               data-placeholder-bg="Имейл адрес"
+                               data-placeholder-en="Email address">
+                    </div>
+                    <button type="submit" class="btn btn-cta">
+                        <span class="bg">Запиши ме за ранен достъп</span>
+                        <span class="en">Sign Me Up for Early Access</span>
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </form>
+
+                <div class="waitlist-counter reveal">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="10" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M1 14c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>
+                        <span class="bg"><span class="counter-number">1,247</span> семейства вече се записаха</span>
+                        <span class="en"><span class="counter-number">1,247</span> families already signed up</span>
+                    </span>
+                </div>
+
+                <div class="waitlist-success" id="waitlistSuccess">
+                    <div class="checkmark">✓</div>
+                    <h3>
+                        <span class="bg">Готово! Записан/а си!</span>
+                        <span class="en">You're in!</span>
+                    </h3>
+                    <p>
+                        <span class="bg">Ще получиш имейл, когато Zdravko е готово. Благодарим ти!</span>
+                        <span class="en">You'll receive an email when Zdravko is ready. Thank you!</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        Zdravko<span class="leaf"></span>
+                    </a>
+                    <p>
+                        <span class="bg">Мобилно приложение за здравословни семейни рецепти. Запази, организирай и готви с лекота.</span>
+                        <span class="en">A mobile app for healthy family recipes. Save, organize, and cook with ease.</span>
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        </a>
+                        <a href="#" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" aria-label="TikTok">
+                            <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h4>
+                        <span class="bg">Контакти</span>
+                        <span class="en">Contact</span>
+                    </h4>
+                    <ul>
+                        <li><a href="mailto:hello@zdravko.co">hello@zdravko.co</a></li>
+                        <li><a href="#waitlist">
+                            <span class="bg">Ранен достъп</span>
+                            <span class="en">Early Access</span>
+                        </a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>
+                        <span class="bg">Правна информация</span>
+                        <span class="en">Legal</span>
+                    </h4>
+                    <ul>
+                        <li><a href="#">
+                            <span class="bg">Поверителност</span>
+                            <span class="en">Privacy Policy</span>
+                        </a></li>
+                        <li><a href="#">
+                            <span class="bg">Условия за ползване</span>
+                            <span class="en">Terms of Use</span>
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span>&copy; 2026 Zdravko.
+                    <span class="bg">Всички права запазени.</span>
+                    <span class="en">All rights reserved.</span>
+                </span>
+                <span>
+                    <span class="bg">Направено с ❤️ за семейства в България</span>
+                    <span class="en">Made with ❤️ for families in Bulgaria</span>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- LANGUAGE TOGGLE ----
+            const html = document.documentElement;
+            const btnBG = document.getElementById('lang-bg');
+            const btnEN = document.getElementById('lang-en');
+
+            function setLang(lang) {
+                html.setAttribute('lang', lang);
+                btnBG.classList.toggle('active', lang === 'bg');
+                btnEN.classList.toggle('active', lang === 'en');
+                localStorage.setItem('zdravko-lang', lang);
+                updatePlaceholders(lang);
+                // Update page title
+                document.title = lang === 'bg'
+                    ? 'Zdravko — Здравословни рецепти за цялото семейство'
+                    : 'Zdravko — Healthy Family Meals Made Easy';
+                // Update meta description
+                const metaDesc = document.querySelector('meta[name="description"]');
+                if (metaDesc) {
+                    metaDesc.content = lang === 'bg'
+                        ? 'Zdravko е мобилно приложение за здравословни семейни рецепти. Запази рецепти от Instagram, TikTok и YouTube с едно натискане.'
+                        : 'Zdravko is a mobile app for healthy family recipes. Save recipes from Instagram, TikTok, and YouTube with one tap.';
+                }
+            }
+
+            function updatePlaceholders(lang) {
+                document.querySelectorAll('[data-placeholder-bg]').forEach(function(el) {
+                    el.placeholder = lang === 'bg' ? el.dataset.placeholderBg : el.dataset.placeholderEn;
+                });
+            }
+
+            btnBG.addEventListener('click', function() { setLang('bg'); });
+            btnEN.addEventListener('click', function() { setLang('en'); });
+
+            // Restore saved language
+            var savedLang = localStorage.getItem('zdravko-lang') || 'bg';
+            setLang(savedLang);
+
+            // ---- HEADER SCROLL ----
+            var header = document.getElementById('header');
+            var lastScroll = 0;
+
+            window.addEventListener('scroll', function() {
+                var currentScroll = window.pageYOffset;
+                if (currentScroll > 60) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                lastScroll = currentScroll;
+            }, { passive: true });
+
+            // ---- SCROLL REVEAL (IntersectionObserver) ----
+            var revealElements = document.querySelectorAll('.reveal');
+
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.15,
+                    rootMargin: '0px 0px -40px 0px'
+                });
+
+                revealElements.forEach(function(el) {
+                    observer.observe(el);
+                });
+            } else {
+                // Fallback: show all
+                revealElements.forEach(function(el) {
+                    el.classList.add('visible');
+                });
+            }
+
+            // ---- SMOOTH SCROLL FOR ANCHORS ----
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                anchor.addEventListener('click', function(e) {
+                    var targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    var target = document.querySelector(targetId);
+                    if (target) {
+                        e.preventDefault();
+                        var headerHeight = header.offsetHeight;
+                        var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // ---- WAITLIST FORM ----
+            var form = document.getElementById('waitlistForm');
+            var success = document.getElementById('waitlistSuccess');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var name = document.getElementById('waitlistName').value.trim();
+                var email = document.getElementById('waitlistEmail').value.trim();
+
+                if (!name || !email) return;
+
+                // Simple email validation
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+
+                // Hide form, show success
+                form.style.display = 'none';
+                success.classList.add('show');
+
+                // Update counter
+                var counterEl = document.querySelector('.counter-number');
+                if (counterEl) {
+                    counterEl.textContent = '1,248';
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
