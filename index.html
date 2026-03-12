@@ -1330,6 +1330,56 @@
             fill: var(--white);
         }
 
+        /* EU FUNDING BAR */
+        .eu-funding-bar {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 32px;
+            padding: 20px 0;
+        }
+
+        .eu-funding-inner {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .eu-flag {
+            flex-shrink: 0;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .eu-funding-text {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .eu-funding-title {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+        }
+
+        .eu-funding-desc {
+            margin-bottom: 4px;
+        }
+
+        .eu-funding-details {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        @media (max-width: 480px) {
+            .eu-funding-inner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             padding-top: 24px;
@@ -1993,6 +2043,45 @@
                             <span class="en">Terms of Use</span>
                         </a></li>
                     </ul>
+                </div>
+            </div>
+
+            <!-- EU Funding Bar -->
+            <div class="eu-funding-bar">
+                <div class="eu-funding-inner">
+                    <div class="eu-flag">
+                        <svg viewBox="0 0 810 540" width="48" height="32">
+                            <rect fill="#039" width="810" height="540"/>
+                            <g fill="#fc0">
+                                <g transform="translate(405,150)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(465,166)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(509,210)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(525,270)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(509,330)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(465,374)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(405,390)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(345,374)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(301,330)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(285,270)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(301,210)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                                <g transform="translate(345,166)"><path d="M 0,-20 L 5.88,6.18 L -15.93,-7.64 L 15.93,-7.64 L -5.88,6.18 Z"/></g>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="eu-funding-text">
+                        <p class="eu-funding-title">
+                            <span class="bg">Съфинансирано от Европейския съюз</span>
+                            <span class="en">Co-funded by the European Union</span>
+                        </p>
+                        <p class="eu-funding-desc">
+                            <span class="bg">"Здравко" е иновативна ИКТ услуга, която има за цел да предостави на родителите на деца от 3 до 7 години научно-обоснован, но лесен за прилагане подход за здравословно хранене на техните деца.</span>
+                            <span class="en">"Zdravko" is an innovative ICT service aimed at providing parents of children aged 3 to 7 with a science-based yet easy-to-apply approach to healthy eating for their children.</span>
+                        </p>
+                        <p class="eu-funding-details">
+                            <span class="bg">Продължителност: 02/2025 - 08/2026 · Общ бюджет: 320 000,00 лв. · Финансиране от ЕС: 192 000,00 лв.</span>
+                            <span class="en">Duration: 02/2025 - 08/2026 · Total budget: BGN 320,000.00 · EU funding: BGN 192,000.00</span>
+                        </p>
+                    </div>
                 </div>
             </div>
 
